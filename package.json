@@ -1,0 +1,39 @@
+{
+  "name": "hapijs-typescript-boilerplate",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Devanand Kariya",
+  "license": "ISC",
+  "dependencies": {
+    "@hapi/basic": "^7.0.2",
+    "@hapi/glue": "^9.0.1",
+    "@hapi/hapi": "^21.3.10",
+    "@hapi/inert": "^7.1.0",
+    "@hapi/vision": "^7.0.3",
+    "bcrypt": "^5.1.1",
+    "config": "^3.3.12",
+    "hapi-auth-jwt2": "^10.6.0",
+    "hapi-dev-errors": "^4.0.0",
+    "hapi-swagger": "^17.3.0",
+    "joi": "^17.13.3",
+    "mongoose": "^8.6.2",
+    "uuid": "^10.0.0"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/config": "^3.3.5",
+    "@types/glob": "^8.1.0",
+    "@types/hapi__glue": "^6.1.9",
+    "@types/node": "^22.5.5",
+    "@types/uuid": "^10.0.0",
+    "nodemon": "^3.1.4",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.6.2"
+  }
+}

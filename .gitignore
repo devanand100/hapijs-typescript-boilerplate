@@ -1,0 +1,7 @@
+node_modules
+build
+coverage
+.vscode
+.env
+.env.testing
+.editorconfig
