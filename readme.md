@@ -23,18 +23,22 @@ This is a simple boilerplate for a Hapi.js project using TypeScript. It provides
 ## Contributing
 
 Feel free to submit issues or pull requests.
-
 ## Development
-     ```bash
-    npm install
 
-     ```bash
-    npm start
-    
+```bash
+npm install
+```
+
+```bash
+npm start
+```
 
 ## Build
 
-     ```bash
-    pending
-     ```bash
-    pending
+```bash
+#pending
+```
+
+```bash
+#pending
+```
