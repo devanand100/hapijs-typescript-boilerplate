@@ -18,7 +18,7 @@ This is a simple boilerplate for a Hapi.js project using TypeScript. It provides
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/hapi-typescript-boilerplate.git
+   git clone https://github.com/devanand100/hapijs-typescript-boilerplate
 
 ## Contributing
 
