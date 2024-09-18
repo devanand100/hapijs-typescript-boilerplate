@@ -1,11 +1,11 @@
 
 import config from 'config';
-import mongoose  from 'mongoose';
+import mongoose from 'mongoose';
 
 const DEVELOPMENT = 'development'
 const PRODUCTION = 'production';
 
-const getArgument = (argument:string) => {
+const getArgument = (argument: string) => {
   return process.argv.indexOf(argument);
 };
 
@@ -22,7 +22,7 @@ if (getArgument('--development') !== -1 || getArgument('--prod') !== -1) {
 }
 
 // REF: https://github.com/z0mt3c/hapi-swaggered , https://github.com/z0mt3c/hapi-swaggered-ui
-let swaggerOptions:any = {
+let swaggerOptions: any = {
   info: {
     title: 'Hapi-18-boilerplate',
     version: require('../package.json').version,
@@ -43,17 +43,17 @@ let swaggerOptions:any = {
 
 const DEFAULT = 'default';
 
-let plugins:PluginConfig[] = [
+let plugins: PluginConfig[] = [
   {
-    plugin:  '@hapi/inert',
+    plugin: '@hapi/inert',
   },
 ];
 const ENV = config.util.getEnv('NODE_ENV').trim();
 
 if (ENV !== DEFAULT) {
-  swaggerOptions.schemes = ['https', 'http'];
-  swaggerOptions.host = 'productionurl.com';
-  mongoose.set('debug', true);
+  // swaggerOptions.schemes = ['https', 'http'];
+  // swaggerOptions.host = 'productionurl.com';
+  // mongoose.set('debug', true);
 }
 if (ENV !== PRODUCTION) {
   plugins = plugins.concat([
@@ -80,44 +80,33 @@ plugins = plugins.concat([
   {
     plugin: '@hapi/basic',
   },
-  // {
-  //   plugin: '@hapipal/schmervice',
-  // },
-  // {
-  //   plugin: 'mrhorse',
-  //   options: {
-  //     policyDirectory: `${__dirname}/../server/policies`,
-  //     defaultApplyPoint:
-  //       'onPreHandler' /* optional.  Defaults to onPreHandler */,
-  //   },
-  // },
-  // {
-  //   // if you need authentication then uncomment this plugin, and remove "auth: false" below
-  //   plugin: 'plugins/auth.plugin',
-  // },
+  {
+    // if you need authentication then uncomment this plugin, and remove "auth: false" below
+    plugin: 'Plugins/auth.plugin',
+  },
   {
     plugin: 'Routes/root.route',
   },
 ]);
 
-const routesOb:RouteConfig = {
+const routesOb: RouteConfig = {
   'auth.route': 'auth',
 };
 
-// const routes = Object.keys(routesOb);
+const routes = Object.keys(routesOb);
 
-// routes.forEach((r) => {
-//   plugins = plugins.concat([
-//     {
-//       plugin: `routes/${r}`,
-//       routes: {
-//         prefix: `/v1${routesOb[r] ? `/${routesOb[r]}` : ``}`,
-//       },
-//     },
-//   ]);
-// });
+routes.forEach((r) => {
+  plugins = plugins.concat([
+    {
+      plugin: `Routes/${r}`,
+      routes: {
+        prefix: `/v1${routesOb[r] ? `/${routesOb[r]}` : ``}`,
+      },
+    },
+  ]);
+});
 
-export const manifest:any = {
+export const manifest: any = {
   server: {
     router: {
       stripTrailingSlash: true,
@@ -167,5 +156,5 @@ interface RouteConfig {
 interface PluginConfig {
   plugin: string;
   options?: PluginOptions;
-  routes?:RouteConfig
+  routes?: RouteConfig
 }

@@ -49,11 +49,14 @@
     "Routes/*": [
       "./routes/*"
     ],
-    "Services":[
+    "Services/*":[
       "./services/*"
     ],
-    "Utils":[
+    "Utils/*":[
       "./utils/*"
+    ],
+    "Api/*":[
+      "./api/*"
     ]
     },                                      /* Specify a set of entries that re-map imports to additional lookup locations. */
     // "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */

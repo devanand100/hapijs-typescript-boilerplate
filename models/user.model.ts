@@ -8,6 +8,7 @@ import { v4 as Uuidv4 } from 'uuid';
 const Types = Schema.Types;
 
 export interface IUser {
+  _id: string;
   firstName?: string;
   lastName?: string;
   email: string;
@@ -19,28 +20,25 @@ export interface IUser {
   phone: string;
 }
 
-interface GenerateHash {
-
-}
 
 interface IUserMethods {
-  generateHash: (this: UserModel, key: string | Buffer | undefined) => Promise<{
+  generateHash: (key?: string | Buffer) => Promise<{
     key: any;
     hash: string;
-  } | undefined>
+  }>
 }
 
 interface UserModel extends Model<IUser, UserModel, IUserMethods> {
-  generateHash: (this: UserModel, key: string | Buffer | undefined) => Promise<{
+  generateHash: (key?: string | Buffer) => Promise<{
     key: any;
     hash: string;
-  } | undefined>;
-  findByCredentials(name: string): Promise<HydratedDocument<IUser, IUserMethods>>;
+  }>;
+  findByCredentials(username:string, password: string): Promise<HydratedDocument<IUser, IUserMethods>>;
 }
 
 const modelName = 'user';
 
-const UserSchema = new Schema<IUser, UserModel , IUserMethods>(
+const UserSchema = new Schema<IUser, UserModel, IUserMethods>(
   {
     firstName: {
       type: Types.String,
@@ -102,90 +100,77 @@ const UserSchema = new Schema<IUser, UserModel , IUserMethods>(
 
 UserSchema.statics = {
   findByCredentials: async function (username, password) {
-    try {
-      const self = this;
+    const self = this;
 
-      let query = {
-        email: username.toLowerCase(),
+    let query: any = {
+      email: username.toLowerCase(),
+    };
+
+    const emailValidate = Joi.string().email().validate(username);
+
+    if (emailValidate.error) {
+      query = {
+        phone: username,
       };
-
-      const emailValidate = Joi.string().email().validate(username);
-
-      if (emailValidate.error) {
-        query = {
-          phone: username,
-        };
-      }
-
-      let mongooseQuery = self.findOne(query);
-
-      let user = await mongooseQuery.lean();
-
-      if (!user) {
-        return false;
-      }
-
-      const source = user.password;
-
-      let passwordMatch = await Bcrypt.compare(password, source);
-      if (passwordMatch) {
-        return user;
-      }
-    } catch (err) {
-      // errorHelper.handleError(err);
-      console.log(err)
     }
+
+    let mongooseQuery = self.findOne(query);
+
+    let user = await mongooseQuery.lean();
+
+    if (!user) {
+      return false;
+    }
+
+    const source = user.password;
+
+    let passwordMatch = await Bcrypt.compare(password, source);
+    if (passwordMatch) {
+      return user;
+    }
+
   },
   generateHash: async function (key) {
-    try {
-      if (key === undefined) {
-        key = Uuidv4();
-      }
-      let salt = await Bcrypt.genSalt(10);
-      let hash = await Bcrypt.hash(key, salt);
-      return {
-        key,
-        hash,
-      };
-    } catch (err) {
-      // errorHelper.handleError(err);
-      console.log(err)
+
+    if (key === undefined) {
+      key = Uuidv4();
     }
+    let salt = await Bcrypt.genSalt(10);
+    let hash = await Bcrypt.hash(key, salt);
+    return {
+      key,
+      hash,
+    };
+
   },
 };
 
-UserSchema.pre('save', async function (next) {
-  let user = this;
-  if (user.isNew) {
+UserSchema.pre('save', async function () {
+
+  if (this.isNew) {
     // Set Password & hash before save it
-    const passHash = await user.generateHash(user.password);
-    user.password = passHash.hash;
-    const emailHash = await user.generateHash();
-    user.emailHash = emailHash.hash;
-    user.wasNew = true;
+    const passHash = await this.generateHash(this.password)
+
+    this.password = passHash?.hash;
+    const emailHash = await this.generateHash();
+    this.emailHash = emailHash.hash;
   }
-  next();
 });
 
 UserSchema.methods = {
-  generateHash: async function (key: string | Buffer | undefined) {
-    try {
-      if (key === undefined) {
-        key = Uuidv4();
-      }
-      let salt = await Bcrypt.genSalt(10);
-      let hash = await Bcrypt.hash(key, salt);
-      return {
-        key,
-        hash,
-      };
-    } catch (err) {
-      // errorHelper.handleError(err);
-      console.log(err)
+  generateHash: async function (key) {
+    if (key === undefined) {
+      key = Uuidv4();
     }
+    let salt = await Bcrypt.genSalt(10);
+    let hash = await Bcrypt.hash(key, salt);
+    return {
+      key,
+      hash,
+    };
   },
 };
 
 
-export default model(modelName, UserSchema)
+export default model<IUser, UserModel>(modelName, UserSchema)
 
