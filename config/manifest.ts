@@ -1,25 +1,10 @@
 
+import * as dotenv from 'dotenv';
+dotenv.config();
 import config from 'config';
-import mongoose from 'mongoose';
 
 const DEVELOPMENT = 'development'
 const PRODUCTION = 'production';
-
-const getArgument = (argument: string) => {
-  return process.argv.indexOf(argument);
-};
-
-if (getArgument('--development') !== -1) {
-  process.env.NODE_ENV = 'development';
-}
-
-if (getArgument('--prod') !== -1) {
-  process.env.NODE_ENV = 'production';
-}
-
-if (getArgument('--development') !== -1 || getArgument('--prod') !== -1) {
-  process.env.NODE_CONFIG_DIR = `${__dirname}`;
-}
 
 // REF: https://github.com/z0mt3c/hapi-swaggered , https://github.com/z0mt3c/hapi-swaggered-ui
 let swaggerOptions: any = {
