@@ -1,13 +1,13 @@
 import config from 'config';
 import { Server, Plugin, Request, ResponseToolkit } from '@hapi/hapi';
-import { IUser } from 'Models/user.model';
+import { IUser } from '../models/user.model';
 interface decodedTokenType {
   user: Partial<IUser>
 }
 const plugin = {
   register: async function (server: Server, options: any) {
     const jwtValidate = async (decodedToken: decodedTokenType, request: Request, h: ResponseToolkit) => {
-      const User = (await import('Models/user.model')).default
+      const User = (await import('../models/user.model')).default
       let credentials = {
         user: {},
       };

@@ -1,11 +1,12 @@
-import  Joi from 'joi';
-import  Boom from '@hapi/boom';
-import  config from 'config';
-import { ReqRefDefaults, Request, ResponseToolkit } from '@hapi/hapi';
+import Joi from 'joi';
+import Boom from '@hapi/boom';
+import config from 'config';
+import { Request, ResponseToolkit } from '@hapi/hapi';
 
-import User from 'Models/user.model';
-import handleError from 'Utils/errorHelper';
-import createToken from 'Utils/createToken';
+import userModel, { IUser } from '../models/user.model';
+import handleError from '../utils/errorHelper';
+import createToken from '../utils/createToken';
+import UserService from '../services/user.service';
 
 interface UserPayload {
   email: string;
@@ -16,7 +17,7 @@ interface UserPayload {
   cPassword?: string;
 }
 
-const handlers :any= {
+const handlers: any = {
   login: {
     validate: {
       payload: Joi.object<UserPayload>().keys({
@@ -31,7 +32,7 @@ const handlers :any= {
           try {
             const { email, password } = request.payload as UserPayload;
 
-            const user = await User.findByCredentials(email, password);
+            const user = await userModel.findByCredentials(email, password);
             if (user) {
               return user;
             } else {
@@ -61,7 +62,7 @@ const handlers :any= {
         method: async (request: Request, h: ResponseToolkit) => {
           try {
             const lastLogin = Date.now();
-            await User.findByIdAndUpdate(request.pre.user._id, { lastLogin });
+            await userModel.findByIdAndUpdate(request.pre.user._id, { lastLogin });
             return lastLogin;
           } catch (err) {
             handleError(err);
@@ -94,7 +95,7 @@ const handlers :any= {
         firstName: Joi.string().required().trim().label('First Name'),
         lastName: Joi.string().required().trim().label('Last Name'),
         email: Joi.string().email().required().trim().label('Email'),
-        phone: Joi.string().trim().optional().allow('',null).label('Phone Number'),
+        phone: Joi.string().trim().optional().allow('', null).label('Phone Number'),
         password: Joi.string().required().trim().label('Password'),
         cPassword: Joi.string()
           .required()
@@ -108,7 +109,7 @@ const handlers :any= {
         assign: 'uniqueEmail',
         method: async (request: Request<any>, h: ResponseToolkit) => {
           try {
-            const user = await User.findOne({ email: request.payload.email });
+            const user = await userModel.findOne({ email: request.payload.email });
             if (user) {
               throw Boom.badRequest('Email address already exists');
             }
@@ -122,7 +123,7 @@ const handlers :any= {
         assign: 'uniquePhone',
         method: async (request: Request<any>, h: ResponseToolkit) => {
           try {
-            const user = await User.findOne({ phone: request.payload.phone });
+            const user = await userModel.findOne({ phone: request.payload.phone });
             if (user) {
               throw Boom.badRequest('Phone number already exists');
             }
@@ -140,7 +141,7 @@ const handlers :any= {
           }
 
           try {
-            const createdUser = await User.create(request.payload);
+            const createdUser = await userModel.create(request.payload);
             return createdUser;
           } catch (err) {
             handleError(err);
@@ -160,11 +161,10 @@ const handlers :any= {
     },
     pre: [],
     handler: async (request: Request<any>, h: ResponseToolkit) => {
-      const { userService } = request.server.services();
 
-      const user = await userService.getUserById(request.auth.credentials.user._id);
+      const user = await UserService.getUserById(request.auth.credentials.user._id);
 
-      return h.response(user);
+      return h.response(user as IUser);
     },
   },
 };

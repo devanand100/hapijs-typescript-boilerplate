@@ -1,7 +1,7 @@
 
 import Glue from '@hapi/glue';
 import { manifest } from './config/manifest';
-import mongoPlugin from 'Plugins/mongoose.plugin'
+import mongoPlugin from './server/plugins/mongoose.plugin'
 import config from 'config';
 
 // this is the line we mention in manifest.js

@@ -1,7 +1,7 @@
 'use strict';
 
 import Jwt from 'jsonwebtoken';
-import { IUser } from 'Models/user.model';
+import { IUser } from '../models/user.model';
 import config from 'config';
 import handleError from './errorHelper';
 
@@ -16,14 +16,14 @@ const createToken = (user: IUser, expirationPeriod: string) => {
       email: user.email,
       _id: user._id,
     };
-
+    
     token = Jwt.sign(
       {
         user: tokenUser,
       },
-      config.get('constants.JWT_SECRET'),
+      config.get('constants.JWT_SECRET') as string,
       {
-        algorithm: 'none',
+        algorithm: "HS256",
         expiresIn: expirationPeriod,
       },
     );

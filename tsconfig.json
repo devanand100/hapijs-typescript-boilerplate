@@ -41,22 +41,22 @@
       "./config/*"
     ],
     "Models/*": [
-      "./models/*"
+      "./server/models/*"
     ],
     "Plugins/*": [
-      "./plugins/*"
+      "./server/plugins/*"
     ],
     "Routes/*": [
-      "./routes/*"
+      "./server/routes/*"
     ],
     "Services/*":[
-      "./services/*"
+      "./server/services/*"
     ],
     "Utils/*":[
-      "./utils/*"
+      "./server/utils/*"
     ],
     "Api/*":[
-      "./api/*"
+      "./server/api/*"
     ]
     },                                      /* Specify a set of entries that re-map imports to additional lookup locations. */
     // "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */
