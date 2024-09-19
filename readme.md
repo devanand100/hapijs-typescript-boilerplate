@@ -4,25 +4,27 @@ This is a simple boilerplate for a Hapi.js project using TypeScript. It provides
 
 ## Features
 
-- Hapi.js for server framework
-- TypeScript for type safety
-- Basic configuration and structure
+-   Hapi.js for server framework
+-   TypeScript for type safety
+-   Basic configuration and structure
 
 ## Prerequisites
 
-- Node.js (>= 20.9.0)
-- npm (>= 10.1.0)
+-   Node.js (>= 20.9.0)
+-   npm (>= 10.1.0)
 
 ## Installation
 
 1. Clone the repository:
 
-   ```bash
-   git clone https://github.com/devanand100/hapijs-typescript-boilerplate
+    ```bash
+    git clone https://github.com/devanand100/hapijs-typescript-boilerplate
+    ```
 
 ## Contributing
 
 Feel free to submit issues or pull requests.
+
 ## Development
 
 ```bash
