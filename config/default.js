@@ -1,4 +1,4 @@
-{
+ module.exports =  {
     "appName": "hapi-18-boilerplate",
     "port": 1400,
     "debug": {

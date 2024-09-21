@@ -6,10 +6,10 @@ const DEVELOPMENT = 'development'
 const PRODUCTION = 'production'
 
 // REF: https://github.com/z0mt3c/hapi-swaggered , https://github.com/z0mt3c/hapi-swaggered-ui
-let swaggerOptions: any = {
+const swaggerOptions: any = {
     info: {
         title: 'Hapi-18-boilerplate',
-        version: require('../package.json').version,
+        version: "1.0.0",
     },
     basePath: '/v1',
     documentationPath: '/docs',
@@ -66,10 +66,10 @@ plugins = plugins.concat([
     },
     {
         // if you need authentication then uncomment this plugin, and remove "auth: false" below
-        plugin: 'Plugins/auth.plugin',
+        plugin: './server/plugins/auth.plugin',
     },
     {
-        plugin: 'Routes/root.route',
+        plugin: './server/routes/root.route',
     },
 ])
 
@@ -82,7 +82,7 @@ const routes = Object.keys(routesOb)
 routes.forEach((r) => {
     plugins = plugins.concat([
         {
-            plugin: `Routes/${r}`,
+            plugin: `./server/routes/${r}`,
             routes: {
                 prefix: `/v1${routesOb[r] ? `/${routesOb[r]}` : ``}`,
             },

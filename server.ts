@@ -19,10 +19,11 @@ const startServer = async () => {
                 connections: config.get('connections'),
             },
         })
-        // const services = Glob.sync('server/services/*.js');
-        // services.forEach((service) => {
-        //   server.registerService(require(`${process.cwd()}/${service}`));
-        // });
+
+        server.ext('onPreHandler', (request, h) => {
+            console.log(`Incoming request: ${request.method.toUpperCase()} ${request.path}`);
+            return h.continue;
+        });
 
         await server.start()
         console.log(`Server listening on ${server.info.uri}`)
