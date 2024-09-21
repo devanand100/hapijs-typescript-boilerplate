@@ -101,7 +101,6 @@ const UserSchema = new Schema<IUser, UserModel, IUserMethods>(
 
 UserSchema.statics = {
     findByCredentials: async function (username, password) {
-        const self = this
 
         let query: any = {
             email: username.toLowerCase(),
@@ -115,7 +114,7 @@ UserSchema.statics = {
             }
         }
 
-        const mongooseQuery = self.findOne(query)
+        const mongooseQuery = this.findOne(query)
 
         const user = await mongooseQuery.lean()
 

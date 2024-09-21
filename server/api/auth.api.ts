@@ -50,7 +50,7 @@ const handlers: any = {
             },
             {
                 assign: 'accessToken',
-                method: (request: Request, h: ResponseToolkit) => {
+                method: (request: Request) => {
                     return createToken(
                         request.pre.user,
                         config.get('constants.EXPIRATION_PERIOD')
@@ -155,7 +155,7 @@ const handlers: any = {
             },
             {
                 assign: 'signup',
-                method: async (request: Request<any>, h: ResponseToolkit) => {
+                method: async (request: Request<any>) => {
                     if (request.payload.cPassword) {
                         delete request.payload.cPassword
                     }
