@@ -35,12 +35,12 @@ npm install
 npm start
 ```
 
-## Build
+## Docker Build
 
 ```bash
-#pending
+sudo docker build -t myimage .
 ```
 
 ```bash
-#pending
+sudo docker run --network="host" myimage
 ```
