@@ -2,7 +2,7 @@ import * as dotenv from 'dotenv'
 dotenv.config()
 import config from 'config'
 
-const DEVELOPMENT = 'development'
+// const DEVELOPMENT = 'development'
 const PRODUCTION = 'production'
 
 // REF: https://github.com/z0mt3c/hapi-swaggered , https://github.com/z0mt3c/hapi-swaggered-ui
@@ -109,15 +109,15 @@ export const manifest: any = {
                 // ref: https://github.com/hapijs/hapi/issues/2986
                 headers: ['Accept', 'Authorization', 'Content-Type'],
             },
-            // validate: {
-            //   failAction: async (request, h, err) => {
-            //     request.server.log(
-            //       ['validation', 'error'],
-            //       'Joi throw validation error',
-            //     );
-            //     throw err;
-            //   },
-            // },
+            validate: {
+              failAction: async (request:any, _h: any, err:any) => {
+                request.server.log(
+                  ['validation', 'error'],
+                  'Joi throw validation error',
+                );
+                throw err;
+              },
+            },
             auth: false, // remove this to enable authentication or set your authentication profile ie. auth: 'jwt'
         },
         debug: config.get('debug'),

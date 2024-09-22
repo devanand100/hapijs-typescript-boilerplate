@@ -1,7 +1,7 @@
-import { Server, Plugin, Request, ResponseToolkit } from '@hapi/hapi'
+import { Plugin } from '@hapi/hapi'
 // Never take constants here
 const plugin: Plugin<any> = {
-    async register(server, options) {
+    async register(server) {
         const API = (await import('../api/auth.api')).default
         server.route([
             {
